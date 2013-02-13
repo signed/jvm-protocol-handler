@@ -3,10 +3,10 @@ package com.github.signed.protocols.jvm;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 
-public class JcmStreamHandlerFactory implements URLStreamHandlerFactory {
+public class JvmStreamHandlerFactory implements URLStreamHandlerFactory {
     private MemoryDictionary dictionary;
 
-    public JcmStreamHandlerFactory(MemoryDictionary dictionary) {
+    public JvmStreamHandlerFactory(MemoryDictionary dictionary) {
         this.dictionary = dictionary;
     }
 

@@ -5,6 +5,6 @@ import java.net.URL;
 public class JvmProtocolHandler {
 
     public static void registerJvmProtocolHandler(MemoryDictionary dictionary) {
-        URL.setURLStreamHandlerFactory(new JcmStreamHandlerFactory(dictionary));
+        URL.setURLStreamHandlerFactory(new JvmStreamHandlerFactory(dictionary));
     }
 }
