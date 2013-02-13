@@ -39,7 +39,6 @@ if(project.hasProperty('release')){
     //repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
 }
 
-
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from 'build/docs/javadoc'
@@ -71,10 +70,10 @@ uploadArchives {
             }
 
             pom.project {
-                name 'pockutio'
+                name 'jvm-protocol-handler'
                 packaging 'jar'
                 inceptionYear '2012'
-                description 'pockutio is a set of small extensions to mockito'
+                description 'jvm-protocol-handler enables the use of jvm://key urls to resolve objects'
                 url 'https://github.com/signed/jvm-protocol-handler'
 
                 scm {
