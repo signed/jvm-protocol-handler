@@ -16,6 +16,7 @@ idea {
 
 dependencies {
     testCompile 'junit:junit:4.11'
+    testCompile 'com.google.guava:guava:14.0-rc2'
 }
 
 configurations.all {
