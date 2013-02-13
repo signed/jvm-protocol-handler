@@ -31,12 +31,36 @@ apply plugin: 'signing'
 group = 'com.github.signed.jvm-protocol-handler'
 version = '0.0.1-SNAPSHOT'
 
-def repositoryUrl = 'http://localhost:8081/nexus/content/repositories/snapshots'
-//def repositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
-if(project.hasProperty('release')){
+
+def environments = [
+        'local': [
+                repositoryLogin: deploymentNexusLocalLogin,
+                repositoryPassword: deploymentNexusLocalPassword,
+                'urls': [
+                        'snapshot': 'http://localhost:8081/nexus/content/repositories/snapshots',
+                        'release' : 'http://localhost:8081/nexus/content/repositories/releases'
+
+                ]
+        ],
+        'sonatype': [
+                repositoryLogin: deploymentSonatypeLogin,
+                repositoryPassword: deploymentSonatypePassword,
+                'urls': [
+                        'snapshot': 'https://oss.sonatype.org/content/repositories/snapshots',
+                        'release' : 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+
+                ]
+        ]
+]
+
+
+def intent = hasProperty('release') ? 'release' : 'snapshot'
+def target = hasProperty('sonatype') ? 'sonatype' : 'local'
+println "intent: $intent target: $target url: ${environments.get(target).urls.get(intent)}"
+
+def environment = environments.get(target)
+if (project.hasProperty('release')) {
     project.version -= '-SNAPSHOT'
-    repositoryUrl = 'http://localhost:8081/nexus/content/repositories/releases'
-    //repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -65,8 +89,8 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            repository(url: repositoryUrl) {
-                authentication(userName: deploymentNexusLocalLogin, password: deploymentNexusLocalPassword)
+            repository(url: environment.urls.get(intent)) {
+                authentication(userName: environment.repositoryLogin, password: environment.repositoryPassword)
             }
 
             pom.project {
