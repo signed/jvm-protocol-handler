@@ -89,7 +89,11 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            repository(url: environment.urls.get(intent)) {
+            repository(url: environment.urls.release) {
+                authentication(userName: environment.repositoryLogin, password: environment.repositoryPassword)
+            }
+
+            snapshotRepository(url: environment.urls.snapshot){
                 authentication(userName: environment.repositoryLogin, password: environment.repositoryPassword)
             }
 
